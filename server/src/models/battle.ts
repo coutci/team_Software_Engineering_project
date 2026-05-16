@@ -3,7 +3,7 @@ import { Pokemon } from './pokemon';
 import { getTypeEffectiveness, getTypeName } from '../data/type-chart';
 import { calculateDamage, calculateEscapeChance, calculateCatchProbability } from './battle-rules';
 import { Move, PokeBallType, PokemonData, BattleStateData } from '../types';
-import { HEAL_POTION_PERCENT, EXP_BASE_GAIN, EXP_LEVEL_BASE } from '../config';
+import { HEAL_POTION_PERCENT, EXP_BASE_GAIN, EXP_LEVEL_BASE, GOLD_WIN_BATTLE, GOLD_CATCH_POKEMON } from '../config';
 
 interface PokeBallInfo {
   type: PokeBallType;
@@ -240,6 +240,8 @@ export class Battle {
     if (roll < catchProbability) {
       this.actionLog.push('💫 摇晃...摇晃...咔嚓！');
       this.actionLog.push(`🎉 成功收服了 ${enemyPoke.name}！`);
+      this.player.gold += GOLD_CATCH_POKEMON;
+      this.actionLog.push(`💰 获得了 ${GOLD_CATCH_POKEMON} 金币！`);
 
       enemyPoke.stats.hp = enemyPoke.stats.maxHp;
       this.player.addPokemon(enemyPoke);
@@ -335,6 +337,8 @@ export class Battle {
     if (enemyPoke.isFainted()) {
       this.actionLog.push(`💫 ${enemyPoke.name} 失去了战斗能力！`);
       this.actionLog.push('🎉 战斗胜利！获得了经验值！');
+      this.player.gold += GOLD_WIN_BATTLE;
+      this.actionLog.push(`💰 获得了 ${GOLD_WIN_BATTLE} 金币！`);
 
       playerPoke.exp += EXP_BASE_GAIN;
       if (playerPoke.exp >= playerPoke.maxExp) {

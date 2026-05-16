@@ -6,6 +6,7 @@ import {
   EXP_LEVEL_BASE,
 } from '../config';
 import { createStarterItems } from '../data/items';
+import { PlayerSaveData } from '../services/user-store';
 
 export class Player {
   name: string;
@@ -13,6 +14,7 @@ export class Player {
   storage: Pokemon[];
   pokeballs: [number, number, number, number];
   items: Item[];
+  gold: number;
 
   constructor(name: string) {
     this.name = name;
@@ -20,6 +22,36 @@ export class Player {
     this.storage = [];
     this.pokeballs = [STARTER_POKEBALL, STARTER_GREATBALL, STARTER_ULTRABALL, STARTER_MASTERBALL];
     this.items = createStarterItems();
+    this.gold = 0;
+  }
+
+  // 从存档恢复
+  static fromSaveData(save: PlayerSaveData): Player {
+    const p = new Player(save.username);
+    p.name = save.username;
+    p.pokeballs = save.pokeballs as [number, number, number, number];
+    p.items = save.items.map((it: any) => ({ ...it }));
+    p.gold = save.gold ?? 0;
+    for (const pd of save.team) {
+      p.team.push(Pokemon.fromData(pd));
+    }
+    for (const pd of save.storage) {
+      p.storage.push(Pokemon.fromData(pd));
+    }
+    return p;
+  }
+
+  // 导出存档数据
+  toSaveData(currentLocation: number): PlayerSaveData {
+    return {
+      username: this.name,
+      team: this.getTeamData(),
+      storage: this.getStorageData(),
+      pokeballs: [...this.pokeballs],
+      items: this.items.map(it => ({ ...it })),
+      gold: this.gold,
+      currentLocation,
+    };
   }
 
   addPokemon(p: Pokemon): void {

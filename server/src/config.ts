@@ -32,6 +32,21 @@ export const MASTERBALL_CATCH_RATE = 99.0;
 export const MAX_TEAM_SIZE = 6;
 export const POKEMONS_PER_PAGE = 5;
 
+// ==================== 金币系统配置 ====================
+export const GOLD_WIN_BATTLE = 100;
+export const GOLD_CATCH_POKEMON = 50;
+
+// ==================== 商店系统配置 ====================
+export const SHOP_ITEMS = [
+  { name: '精灵球', type: 'ball', ballIndex: 0, price: 50, description: '普通精灵球，捕捉倍率1.0' },
+  { name: '超级球', type: 'ball', ballIndex: 1, price: 150, description: '超级球，捕捉倍率1.5' },
+  { name: '高级球', type: 'ball', ballIndex: 2, price: 300, description: '高级球，捕捉倍率2.0' },
+  { name: '大师球', type: 'ball', ballIndex: 3, price: 1000, description: '大师球，几乎必中' },
+  { name: '治疗药水', type: 'item', itemIndex: 0, price: 30, description: '恢复33% HP' },
+  { name: '经验药水', type: 'item', itemIndex: 1, price: 60, description: '获得50经验值' },
+  { name: '复活药剂', type: 'item', itemIndex: 2, price: 100, description: '复活阵亡宝可梦' },
+];
+
 // ==================== 游戏系统配置 ====================
 export const STARTER_POKEBALL = 10;
 export const STARTER_GREATBALL = 3;

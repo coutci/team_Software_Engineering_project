@@ -67,6 +67,7 @@ export interface PlayerStatusResponse {
   totalPokeBalls: number;
   teamCount: number;
   maxTeamSize: number;
+  gold?: number;
 }
 
 export interface MoveResponse {

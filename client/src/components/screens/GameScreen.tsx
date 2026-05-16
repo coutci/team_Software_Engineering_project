@@ -3,6 +3,7 @@ import { useGameState } from '../../store/game-context';
 import { useGame } from '../../hooks/useGame';
 import SceneCanvas from '../map/SceneCanvas';
 import TeamScreen from './TeamScreen';
+import ShopPanel from '../shop/ShopPanel';
 
 const DIR_INFO: Record<string, { label: string; sym: string; row: number; col: number }> = {
   n: { label: '北', sym: '↑', row: 1, col: 2 },
@@ -81,6 +82,7 @@ const GameScreen: React.FC = () => {
           <span style={{ color: '#CCC' }}>训练家: {state.playerName}</span>
         </div>
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+          <span style={{ color: '#FFD700', fontSize: 14 }}>💰 {(state.playerStatus as any)?.gold ?? 0}</span>
           <span style={{ color: '#CCC', fontSize: 14 }}>
             🎒 {state.playerStatus?.totalPokeBalls ?? 0}
           </span>
@@ -158,8 +160,12 @@ const GameScreen: React.FC = () => {
           <DirectionBtn dir="e" available={availableDirs} onMove={movePlayer} disabled={state.loading} />
         </div>
 
-        {/* 右侧：空白占位保持居中 */}
-        <div style={{ width: 200 }} />
+        {/* 右侧：精灵中心时显示商店，否则占位 */}
+        {locIdx === 4 ? (
+          <ShopPanel />
+        ) : (
+          <div style={{ width: 200 }} />
+        )}
       </main>
 
       {/* 通知 */}

@@ -8,6 +8,10 @@ const STARTERS = [
   { name: '妙蛙种子', type: '草', color: '#78C850', desc: '草属性，背上的种子蕴藏力量' },
 ];
 
+interface Props {
+  skipToGame: () => void;
+}
+
 const StartScreen: React.FC = () => {
   const [playerName, setPlayerName] = useState('Red');
   const [selected, setSelected] = useState(1);

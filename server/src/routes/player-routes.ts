@@ -15,6 +15,7 @@ router.get('/status', sessionMiddleware, (req: Request, res: Response) => {
     totalPokeBalls: session.player.getTotalBalls(),
     teamCount: session.player.team.length,
     maxTeamSize: 6,
+    gold: session.player.gold,
   });
 });
 

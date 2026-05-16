@@ -3,10 +3,12 @@ import { sessionManager } from '../services/session-manager';
 import { sessionMiddleware } from '../middleware/session';
 import { DIRECTION_NAMES } from '../data/locations';
 import { START_SPECIES } from '../data/species';
+import { Pokemon } from '../models/pokemon';
 
 const router = Router();
 
 // POST /api/game/start
+// 支持两种模式：无session创建新游戏，有session则为已有用户添加初始宝可梦
 router.post('/start', (req: Request, res: Response) => {
   const { playerName, starterIndex } = req.body;
 
@@ -16,6 +18,33 @@ router.post('/start', (req: Request, res: Response) => {
   }
 
   const species = START_SPECIES[starterIndex - 1];
+  const sessionId = req.headers['x-session-id'] as string | undefined;
+
+  // 已有会话（登录后选初始宝可梦）
+  if (sessionId) {
+    const session = sessionManager.getSession(sessionId);
+    if (!session) {
+      res.status(401).json({ success: false, error: '会话无效' });
+      return;
+    }
+    const starter = new Pokemon(species, 5);
+    session.player.addPokemon(starter);
+    const loc = session.map.getCurrentLocation();
+
+    res.json({
+      sessionId: session.sessionId,
+      playerName: session.player.name,
+      currentLocation: loc.name,
+      locationDescription: loc.description,
+      totalPokeBalls: session.player.getTotalBalls(),
+      teamCount: session.player.team.length,
+      maxTeamSize: 6,
+      team: session.player.getTeamData(),
+    });
+    return;
+  }
+
+  // 新建会话
   const session = sessionManager.createSession(playerName || 'Red', species);
   const loc = session.map.getCurrentLocation();
 

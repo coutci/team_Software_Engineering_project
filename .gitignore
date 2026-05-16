@@ -19,3 +19,4 @@ pic/bb/*.png
 # Node.js
 node_modules/
 server/dist/
+server/data/*.json

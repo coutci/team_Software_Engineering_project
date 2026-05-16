@@ -6,6 +6,8 @@ import mapRoutes from './routes/map-routes';
 import battleRoutes from './routes/battle-routes';
 import teamRoutes from './routes/team-routes';
 import itemRoutes from './routes/item-routes';
+import authRoutes from './routes/auth-routes';
+import shopRoutes from './routes/shop-routes';
 import { errorHandler } from './middleware/error-handler';
 
 const app = express();
@@ -21,6 +23,8 @@ app.use('/api/map', mapRoutes);
 app.use('/api/battle', battleRoutes);
 app.use('/api/team', teamRoutes);
 app.use('/api/items', itemRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/shop', shopRoutes);
 
 // 健康检查
 app.get('/api/health', (_req, res) => {
